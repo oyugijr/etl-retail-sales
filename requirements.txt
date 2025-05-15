@@ -1,0 +1,8 @@
+pandas
+duckdb
+mysql-connector-python
+pyyaml
+streamlit
+seaborn
+matplotlib
+
