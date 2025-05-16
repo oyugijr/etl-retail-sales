@@ -1,16 +1,20 @@
-# ETL Retail Sales Project
+# Retail Sales ETL Project
 
-This project implements an ETL pipeline that:
+This project extracts sales and payment data from a MySQL database (`salesDB`), processes it using a custom ETL pipeline, and loads it into DuckDB for analytics.
 
-- Extracts sales data from a MySQL database (`salesDB`)
-- Transforms the data by cleaning and enriching it
-- Loads the processed data into a DuckDB database for analysis
+## Features
 
-## Setup
+- Extracts orders, payments, and customer data
+- Transforms and cleans using pandas
+- Loads into DuckDB
+- Streamlit dashboard for visualization
+- Jupyter notebook for exploratory analysis
 
-1. Install dependencies:
+## How to Run
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
+```bash
+pip install -r requirements.txt
+python etl/pipeline.py
+streamlit run dashboard/app.py
+jupyter notebook notebooks/Exploratory_Analysis.ipynb
+```

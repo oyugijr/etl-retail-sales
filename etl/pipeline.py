@@ -17,3 +17,16 @@ def run_pipeline():
 if __name__ == "__main__":
     run_pipeline()
 # This script orchestrates the ETL process by extracting data from MySQL, transforming it, and loading it into DuckDB.
+
+from extract import extract_data
+from transform import transform_data
+from load import load_to_duckdb
+
+def run_pipeline():
+    raw = extract_data()
+    clean = transform_data(raw)
+    load_to_duckdb(clean)
+    print("✅ ETL pipeline completed.")
+
+if __name__ == "__main__":
+    run_pipeline()

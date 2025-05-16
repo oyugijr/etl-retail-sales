@@ -1,17 +1,18 @@
-import pandas as pd
+def transform_data(data):
+    customers = data["customers"]
+    payments = data["payments"]
+    orders = data["orders"]
+    employees = data["employees"]
 
-def clean_sales_data(df, products_df, stores_df):
-    df = df[df['status'] == 'completed']
-    df['total'] = df['quantity'] * df['price']
-    df['date'] = pd.to_datetime(df['date'])
-    df = df.merge(products_df, on='product_id', how='left')
-    df = df.merge(stores_df, on='store_id', how='left')
-    return df
+    # Join payments with customers
+    payments = payments.merge(customers, on="customerNumber")
 
+    # Calculate total per order
+    orders["total"] = orders["quantityOrdered"] * orders["priceEach"]
 
-# import pandas as pd
-
-# def clean_sales_data(df):
-#     df['date'] = pd.to_datetime(df['date'])
-#     df = df.dropna()
-#     return df
+    return {
+        "payments": payments,
+        "orders": orders,
+        "employees": employees
+    }
+# This script extracts data from MySQL and transforms it into a format suitable for analysis.
