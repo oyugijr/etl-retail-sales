@@ -10,6 +10,7 @@ def extract_data():
 
     queries = {
         "customers": "SELECT * FROM customers",
+        "orderdetails": "SELECT * FROM orderdetails",
         "payments": "SELECT * FROM payments",
         "orders": """
             SELECT o.orderNumber, o.orderDate, o.customerNumber,
