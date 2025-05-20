@@ -5,4 +5,4 @@ pyyaml
 streamlit
 seaborn
 matplotlib
-
+sqlalchemy

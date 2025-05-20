@@ -4,6 +4,8 @@ def transform_data(data):
     orders = data["orders"]
     employees = data["employees"]
     orderdetails = data["orderdetails"]
+    products  = data["products"]
+    productlines = data["productlines"]
 
     # Join payments with customers
     payments = payments.merge(customers, on="customerNumber")
@@ -16,6 +18,8 @@ def transform_data(data):
         "payments": payments,
         "orders": orders,
         "employees": employees,
-        "orderdetails": orderdetails
+        "orderdetails": orderdetails,
+        "products": products,
+        "productlines": productlines
     }
 # This script extracts data from MySQL and transforms it into a format suitable for analysis.

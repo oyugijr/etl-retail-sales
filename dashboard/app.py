@@ -30,15 +30,27 @@ country_list = ', '.join(f"'{c}'" for c in selected_countries)
 # --- Key Metrics ---
 st.subheader("🔢 Key Metrics")
 
+# query_kpi = f"""
+# SELECT 
+#     SUM(total) AS total_sales,
+#     COUNT(*) AS total_orders
+# FROM orders o
+# JOIN customers c ON o.customerNumber = c.customerNumber
+# WHERE o.orderDate BETWEEN '{start_str}' AND '{end_str}'
+# AND c.country IN ({country_list})
+# """
+
 query_kpi = f"""
 SELECT 
-    SUM(total) AS total_sales,
-    COUNT(*) AS total_orders
+    SUM(od.quantityOrdered * od.priceEach) AS total_sales,
+    COUNT(DISTINCT o.orderNumber) AS total_orders
 FROM orders o
 JOIN customers c ON o.customerNumber = c.customerNumber
+JOIN orderdetails od ON o.orderNumber = od.orderNumber
 WHERE o.orderDate BETWEEN '{start_str}' AND '{end_str}'
 AND c.country IN ({country_list})
 """
+
 kpi = con.execute(query_kpi).fetchone()
 total_sales, total_orders = kpi
 avg_order = round(total_sales / total_orders, 2) if total_orders else 0
@@ -51,17 +63,30 @@ col3.metric("Avg Order Value", f"${avg_order:,.2f}")
 # --- Sales by Product Line ---
 st.subheader("📦 Sales by Product Line")
 
+# query_product_line = f"""
+# SELECT productLine, SUM(total) AS total_sales
+# FROM orders o
+# JOIN customers c ON o.customerNumber = c.customerNumber
+# JOIN orderdetails od ON o.orderNumber = od.orderNumber
+# JOIN products p ON od.productCode = p.productCode
+# WHERE o.orderDate BETWEEN '{start_str}' AND '{end_str}'
+# AND c.country IN ({country_list})
+# GROUP BY productLine
+# ORDER BY total_sales DESC
+# """
+
 query_product_line = f"""
-SELECT productLine, SUM(total) AS total_sales
+SELECT p.productLine, SUM(od.quantityOrdered * od.priceEach) AS total_sales
 FROM orders o
 JOIN customers c ON o.customerNumber = c.customerNumber
 JOIN orderdetails od ON o.orderNumber = od.orderNumber
 JOIN products p ON od.productCode = p.productCode
 WHERE o.orderDate BETWEEN '{start_str}' AND '{end_str}'
 AND c.country IN ({country_list})
-GROUP BY productLine
+GROUP BY p.productLine
 ORDER BY total_sales DESC
 """
+# Execute query and convert to DataFrame
 df_product = con.execute(query_product_line).df()
 st.bar_chart(df_product.set_index("productLine"))
 
