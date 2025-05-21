@@ -8,7 +8,7 @@ import pydeck as pdk
 st.set_page_config(page_title="Retail Sales Dashboard", layout="wide")
 st.title("📊 Interactive Retail Sales Dashboard")
 
-con = duckdb.connect("output/salesdb.duckdb")
+con = duckdb.connect("salesdb.duckdb")
 
 # --- Sidebar Filters ---
 st.sidebar.header("Filters")
